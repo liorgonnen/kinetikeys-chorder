@@ -18,7 +18,7 @@ I uploaded the STL files for the left hand. You can already 3D print and use the
 * 10 x [Kailh Choc Low-Profile](https://novelkeys.xyz/collections/switches/products/kailh-low-profile-switches?variant=3747939680296) switches
 * 16 x [M2.5 screws](https://www.amazon.com/HVAZI-Metric-Stainless-Socket-Assortment/dp/B07F14J7X8)
 * [Thin wire](https://www.amazon.com/StrivedayTM-Flexible-Silicone-electronic-electrics/dp/B01KQ2JNLI) to connect the switches to the microcontroller
-* Grip adhesive tape
+* [Grip adhesive tape](https://www.amazon.com/Meister-StickElite-Professional-Porous-Athletic/dp/B06W9M7J2P)
 * Optional: [Terminal Block Kit](https://www.adafruit.com/product/3173) for Feather
 * Optional: 5-wire block connector (for all ground wires)
 
@@ -38,6 +38,7 @@ I uploaded the STL files for the left hand. You can already 3D print and use the
 * Wrap the hand-strap in adhesive tape so that it feels nicer and more secure on your hand
 * Flash the firmware (It's an Arduino-compatible [PlatformIO](https://platformio.org/) project
 
+Alright! You're ready to go! Customize the keymap to your liking (right now it's just a dummy a-z mapping for testing). I'll add mine in the upcoming days.
 
 # Previous Work
 Check out my previous attempt at a wearable keyboard: [Kinetikeys-Concept0](https://github.com/liorgonnen/kinetikeys-concept0).
