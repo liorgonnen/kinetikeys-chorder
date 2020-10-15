@@ -1,14 +1,12 @@
 #include <Arduino.h>
 #include <bluefruit.h>
+#include <Jumper.h>
+#include <ChordedKeyboardHalf.h>
+#include <ChordedKeyboardMaster.h>
+#include <ChordedKeyboardSlave.h>
 
-#define KEY1 PIN_A0
-#define KEY2 PIN_A1
-#define KEY3 PIN_A2
-#define KEY4 PIN_A3
-#define KEY5 PIN_A4
 #define NUM_KEYS 5
 
-uint8_t KEYS[] = { KEY1, KEY2, KEY3, KEY4, KEY5 };
 
 // Dummy key map for now
 char KEY_VALUES[] = {
@@ -42,93 +40,125 @@ char KEY_VALUES[] = {
 
 const int NUM_KEY_VALUES = (sizeof(KEY_VALUES) / sizeof(char));
 
+BLEHidAdafruit bleHidService;
+BLEClientUart blePeripheral;
 
-BLEDis bledis;
-BLEHidAdafruit blehid;
+ChordedKeyboardHalf* keyboard;
 
-void startAdv()
-{  
-  // Advertising packet
-  Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
-  Bluefruit.Advertising.addTxPower();
-  Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
-  
-  // Include BLE HID service
-  Bluefruit.Advertising.addService(blehid);
+void peripheralRxCallback(uint16_t connectionHandle)
+{
 
-  // There is enough room for the dev name in the advertising packet
-  Bluefruit.Advertising.addName();
-  
-  /* Start Advertising
-   * - Enable auto advertising if disconnected
-   * - Interval:  fast mode = 20 ms, slow mode = 152.5 ms
-   * - Timeout for fast mode is 30 seconds
-   * - Start(timeout) with timeout = 0 will advertise forever (until connected)
-   * 
-   * For recommended advertising interval
-   * https://developer.apple.com/library/content/qa/qa1931/_index.html   
-   */
-  Bluefruit.Advertising.restartOnDisconnect(true);
-  Bluefruit.Advertising.setInterval(32, 244);    // in unit of 0.625 ms
-  Bluefruit.Advertising.setFastTimeout(30);      // number of seconds in fast mode
-  Bluefruit.Advertising.start(0);                // 0 = Don't stop advertising after n seconds
 }
 
+void centralRxCallback(BLEClientUart& service)
+{
+
+}
+
+void onSecondaryChorderConnected(uint16_t connectionHandle) 
+{
+  /*Serial.println("Secondary chorder CONNECTED");
+
+  Serial.print("Dicovering Device Information ... ");
+  if (bleDeviceInfoService.discover(connectionHandle)) {
+    Serial.println("Found it");
+    char buffer[32+1];
+    
+    // read and print out Manufacturer
+    memset(buffer, 0, sizeof(buffer));
+    if (clientDis.getManufacturer(buffer, sizeof(buffer))) {
+      Serial.print("Manufacturer: ");
+      Serial.println(buffer);
+    }
+
+    // read and print out Model Number
+    memset(buffer, 0, sizeof(buffer));
+    if (clientDis.getModel(buffer, sizeof(buffer))) {
+      Serial.print("Model: ");
+      Serial.println(buffer);
+    }
+
+    Serial.println();
+  }
+  else {
+    Serial.println("Found NONE");
+  }
+
+  Serial.print("Dicovering Battery ... ");
+  if (bleBatteryService.discover(connectionHandle)) {
+    Serial.println("Found it");
+    Serial.print("Battery level: ");
+    Serial.print(bleBatteryService.read());
+    Serial.println("%");
+  }
+  else {
+    Serial.println("Found NONE");
+  }
+
+  Serial.print("Discovering BLE Uart Service ... ");
+  if (bleCenteral.discover(connectionHandle)) {
+    Serial.println("Found it");
+
+    Serial.println("Enable TXD's notify");
+    bleCenteral.enableTXD();
+
+    Serial.println("Ready to receive from peripheral");
+  }
+  else {
+    Serial.println("Found NONE");
+    
+    // disconnect since we couldn't find bleuart service
+    Bluefruit.disconnect(connectionHandle);
+  }  */
+}
+
+/*void onSecondaryChorderDisconnected(uint16_t connectionHandle, uint8_t reason)
+{
+  Serial.println("Secondary chorder DISCONNECTED");
+}
+
+*/
 void setupBluetooth() {
-  Bluefruit.begin();
-  Bluefruit.setTxPower(4);    // Check bluefruit.h for supported values
-  Bluefruit.setName("Kinetikeys Chorder");
 
   // Configure and Start Device Information Service
-  bledis.setManufacturer("Lior Gonnen");
-  bledis.setModel("rev-0");
-  bledis.begin();
+  /*bleDeviceInfoService.setManufacturer("Lior Gonnen");
+  bleDeviceInfoService.setModel("Chorder rev-0");
+  bleDeviceInfoService.begin();
 
-  /* Start BLE HID
-   * Note: Apple requires BLE device must have min connection interval >= 20m
-   * ( The smaller the connection interval the faster we could send data).
-   * However for HID and MIDI device, Apple could accept min connection interval 
-   * up to 11.25 ms. Therefore BLEHidAdafruit::begin() will try to set the min and max
-   * connection interval to 11.25  ms and 15 ms respectively for best performance.
-   */
-  blehid.begin();
+  blePeripheral.setRxCallback(peripheralRxCallback);
+  blePeripheral.begin();
 
-  // Set callback for set LED from central
-  //blehid.setKeyboardLedCallback(set_keyboard_led);
+  bleCentral.setRxCallback(centralRxCallback);
+  bleCentral.begin();
 
-  /* Set connection interval (min, max) to your perferred value.
-   * Note: It is already set by BLEHidAdafruit::begin() to 11.25ms - 15ms
-   * min = 9*1.25=11.25 ms, max = 12*1.25= 15 ms 
-   */
-  /* Bluefruit.Periph.setConnInterval(9, 12); */
+  bleHidService.begin();*/
 
-  // Set up and start advertising
-  startAdv();
-}
 
-void setupPins() {
-  // initialize LED digital pin as an output.
-  pinMode(LED_BUILTIN, OUTPUT);
-  
-  
-  for (uint8_t i = 0; i < NUM_KEYS; i++) {
-    pinMode(KEYS[i], INPUT_PULLUP);
-  }
 }
 
 void setup()
 {
-  setupPins();
+  Serial.begin(114400);
+
+  Jumper jumper(5, 6);
+
+  if (jumper.isSet()) {
+    keyboard = new ChordedKeyboardSlave();
+  }
+  else {
+    keyboard = new ChordedKeyboardMaster();
+  }
+
+  keyboard->setup();
 
   setupBluetooth();
-
-  Serial.begin(114400);
 }
 
 int pendingChord = 0;
 
 void loop() {
-  int currentChord = 0;
+  keyboard->loop();
+  /*int currentChord = 0;
   for (uint8_t i = 0; i < NUM_KEYS; i++) {
     if (digitalRead(KEYS[i]) == LOW) {
       currentChord = currentChord | (1 << i);
@@ -141,9 +171,9 @@ void loop() {
     Serial.println(currentChord);
     if (currentChord == 0) {
       if (pendingChord <= NUM_KEY_VALUES) {
-        blehid.keyPress(KEY_VALUES[pendingChord - 1]);
+        bleHidService.keyPress(KEY_VALUES[pendingChord - 1]);
         delay(5);
-        blehid.keyRelease();
+        bleHidService.keyRelease();
         delay(5);
       }
       pendingChord = 0;
@@ -151,5 +181,5 @@ void loop() {
     else {
       pendingChord |= currentChord;
     }
-  }
+  }*/
 }
