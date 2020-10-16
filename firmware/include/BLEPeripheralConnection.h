@@ -9,10 +9,7 @@
 class BLEPeripheralConnection : public BLEConnectionAdapter
 {
 public:
-    void setup() override;
-
-private:
-    void startAdvertising();
+    void setup(BLEService& mainService);
 };
 
 #endif

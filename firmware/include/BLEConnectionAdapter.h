@@ -30,8 +30,7 @@
  */
 class BLEConnectionAdapter
 {
-public:
-    virtual void setup();
+
 };
 
 #endif

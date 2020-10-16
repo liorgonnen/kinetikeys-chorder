@@ -19,11 +19,14 @@ class ChordedKeyboardHalf
 {
 protected:
     ChordedKeyboardHalf() { };
+
+    virtual void setupPins() const = 0;
+    virtual void setupBleConnection() = 0;
     
     //uint8_t KEYS[] = { KEY1, KEY2, KEY3, KEY4, KEY5 };
 
 public:
-    virtual void setup() = 0;
+    void setup();
     virtual void loop() = 0;
 };
 

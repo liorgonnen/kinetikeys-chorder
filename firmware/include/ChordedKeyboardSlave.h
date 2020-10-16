@@ -2,6 +2,7 @@
 #define CHORDEDKEYBOARDMSLAVE_H
 
 #include <ChordedKeyboardHalf.h>
+#include <BLEPeripheralConnection.h>
 #include <Arduino.h>
 
 class ChordedKeyboardSlave : public ChordedKeyboardHalf
@@ -9,8 +10,14 @@ class ChordedKeyboardSlave : public ChordedKeyboardHalf
 public:
     ChordedKeyboardSlave();
 
-    void setup() override;
+protected:
+    void setupPins() const override;
+    void setupBleConnection() override;
     void loop() override;
+
+private:
+    BLEUart masterUartService;
+    BLEPeripheralConnection bleMasterConnection;
 };
 
 #endif

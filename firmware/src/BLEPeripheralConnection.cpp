@@ -1,19 +1,15 @@
 #include <BLEPeripheralConnection.h>
 
-void BLEPeripheralConnection::setup() {
-    BLEConnectionAdapter::setup();
-    startAdvertising();
-}
+void BLEPeripheralConnection::setup(BLEService& mainService) {
 
-void BLEPeripheralConnection::startAdvertising() {
-
+    mainService.begin();
+    
     // Advertising packet
     Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
     Bluefruit.Advertising.addTxPower();
     Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_HID_KEYBOARD);
 
-    // Include BLE HID service
-    //Bluefruit.Advertising.addService(bleHidService);
+    Bluefruit.Advertising.addService(mainService);
 
     // There is enough room for the dev name in the advertising packet
     Bluefruit.Advertising.addName();
