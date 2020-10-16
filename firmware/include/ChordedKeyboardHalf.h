@@ -28,6 +28,9 @@ protected:
 public:
     void setup();
     virtual void loop() = 0;
+
+protected:
+    void hardReset();
 };
 
 #endif

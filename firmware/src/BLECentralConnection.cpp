@@ -5,13 +5,12 @@ BLEClientDis BLECentralConnection::slaveDeviceInfoService;
 BLEClientUart BLECentralConnection::slaveUartService;
 
 void BLECentralConnection::setup() {
-    Serial.println("BLECentralConnection::setup");
+    Serial.println("BLECentralConnection::setup - Begin");
 
-    // 1 connection as peripheral, 1 connection as central
-    Bluefruit.begin(1, 1);
-    Bluefruit.setTxPower(4);    // Check bluefruit.h for supported values
-    Bluefruit.setName("Kinetikeys");
-
+    slaveBatteryService.begin();
+    slaveDeviceInfoService.begin();
+    slaveUartService.begin();
+    
     Bluefruit.Central.setConnectCallback(onDeviceConnected);
     Bluefruit.Central.setDisconnectCallback(onDeviceDisconnected);
 
@@ -19,11 +18,8 @@ void BLECentralConnection::setup() {
     Bluefruit.Scanner.restartOnDisconnect(true);
     Bluefruit.Scanner.setInterval(160, 80); // in unit of 0.625 ms
     Bluefruit.Scanner.useActiveScan(false);
-    Bluefruit.Scanner.start(0);                   // // 0 = Don't stop scanning after n seconds
-
-    slaveBatteryService.begin();
-    slaveDeviceInfoService.begin();
-    slaveUartService.begin();
+    Bluefruit.Scanner.start(0); // 0 = Don't stop scanning after n seconds
+    Serial.println("BLECentralConnection::setup - End");
 }
 
 void BLECentralConnection::onDeviceConnected(uint16_t connectionHandle) {
@@ -43,6 +39,7 @@ void BLECentralConnection::onDeviceDisconnected(uint16_t connectionHandle, uint8
 
 void BLECentralConnection::onScanResponse(ble_gap_evt_adv_report_t* report)
 {
+    Serial.println("BLECentralConnection::onScanResponse");
     if (Bluefruit.Scanner.checkReportForService(report, slaveUartService)) {
         Serial.print("BLE UART service detected. Connecting ... ");
         Bluefruit.Central.connect(report);
