@@ -6,7 +6,11 @@
 #include <BLECentralConnection.h>
 #include <BLEPeripheralConnection.h>
 
-#define NUM_KEYS 5
+#define KEY_M_P PIN_A0
+#define KEY_M_R PIN_A1
+#define KEY_M_M PIN_A2
+#define KEY_M_I PIN_A3
+#define KEY_M_T PIN_A4
 
 // Dummy key map for now
 /*char KEY_VALUES[] = {
@@ -48,12 +52,13 @@ public:
     void loop() override;
 
 protected:
-    void setupPins() const override;
     void setupBleConnection() override;
 
     BLEHidAdafruit bleHidService;
     BLEPeripheralConnection bleHidConnection;
     BLECentralConnection bleSlaveConnection;
+
+    constexpr static SwitchPinArray switchPins = { KEY_M_P, KEY_M_R, KEY_M_M, KEY_M_I, KEY_M_T };
 };
 
 #endif

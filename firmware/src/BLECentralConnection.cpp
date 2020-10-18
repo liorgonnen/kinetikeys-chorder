@@ -10,6 +10,8 @@ void BLECentralConnection::setup() {
     slaveBatteryService.begin();
     slaveDeviceInfoService.begin();
     slaveUartService.begin();
+    slaveUartService.setRxCallback(onSlaveInputReceived);
+    slaveUartService.enableTXD();
     
     Bluefruit.Central.setConnectCallback(onDeviceConnected);
     Bluefruit.Central.setDisconnectCallback(onDeviceDisconnected);
@@ -39,7 +41,6 @@ void BLECentralConnection::onDeviceDisconnected(uint16_t connectionHandle, uint8
 
 void BLECentralConnection::onScanResponse(ble_gap_evt_adv_report_t* report)
 {
-    Serial.println("BLECentralConnection::onScanResponse");
     if (Bluefruit.Scanner.checkReportForService(report, slaveUartService)) {
         Serial.print("BLE UART service detected. Connecting ... ");
         Bluefruit.Central.connect(report);
@@ -49,4 +50,18 @@ void BLECentralConnection::onScanResponse(ble_gap_evt_adv_report_t* report)
         // We need to call Scanner resume() to continue scanning
         Bluefruit.Scanner.resume();
     }
+}
+
+void BLECentralConnection::onSlaveInputReceived(BLEClientUart& slaveUart)
+{
+    Serial.println("BLECentralConnection::onSlaveInputReceived");
+
+    uint8_t slaveChord;
+    slaveUart.read(&slaveChord, sizeof(uint8_t));
+
+    Serial.printf("Slave input received: %d", slaveChord);
+}
+
+bool BLECentralConnection::isSlaveConnected() {
+    return Bluefruit.Central.connected() && slaveUartService.discovered();
 }
