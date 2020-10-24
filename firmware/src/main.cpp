@@ -1,4 +1,3 @@
-
 #include <Arduino.h>
 #include <bluefruit.h>
 #include <Jumper.h>
@@ -11,19 +10,19 @@ ChordedKeyboardHalf* keyboard;
 void setup()
 {
     Serial.begin(115200); 
+    while (!Serial);
+    Serial.println("Serial connected!");  
 
-    #ifdef DEBUG
-    while ( !Serial ) yield();
-    #endif
-
-    Jumper jumper(5, 6);
-
-    if (jumper.isSet()) {
-        keyboard = new ChordedKeyboardSlave();
-    }
-    else {
-        keyboard = new ChordedKeyboardMaster();
-    }
+    //keyboard = new ChordedKeyboardMaster();
+    keyboard = new ChordedKeyboardSlave();
+    
+    // Jumper jumper(5, 6);
+    // if (jumper.isSet()) {
+    //     keyboard = new ChordedKeyboardSlave(); 
+    // }
+    // else {
+    //     keyboard = new ChordedKeyboardMaster();
+    // }
 
     keyboard->setup();
 }
@@ -31,3 +30,4 @@ void setup()
 void loop() {
     keyboard->loop();
 }
+    

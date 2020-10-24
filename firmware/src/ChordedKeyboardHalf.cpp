@@ -1,6 +1,6 @@
 #include <ChordedKeyboardHalf.h>
 
-void(* resetFunc) (void) = 0; //declare reset function at address 0
+void (*resetFunc)(void) = 0; // Declare reset function at address 0
 
 void ChordedKeyboardHalf::setup() 
 {

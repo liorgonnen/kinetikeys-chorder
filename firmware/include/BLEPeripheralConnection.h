@@ -13,7 +13,10 @@ public:
     void setup(BLEService& mainService);
 
 private:
+    static BLEBas  batteryService;
+    static BLEDis  deviceInfoService;
     static void onMasterConnected(uint16_t connectionHandle);
+    static void onMasterDisconnected(uint16_t connectionHandle, uint8_t reason);
 };
 
 #endif

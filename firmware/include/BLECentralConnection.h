@@ -3,6 +3,8 @@
 
 #include "BLEConnectionAdapter.h"
 
+typedef void (*SlaveInputReceivedCallback) (uint8_t input);
+
 // GATT Server
 // A peripheral can advertise to let other device know it's there, but
 // It's the Cetnral that actually sends the connection request
@@ -11,6 +13,7 @@ class BLECentralConnection : public BLEConnectionAdapter
 public:
     void setup();
     bool isSlaveConnected();
+    void setOnInputReceivedCallback(SlaveInputReceivedCallback callback);
 
 private:
     // TODO: Need to check if I can use std::funcrtion in Arduino code
@@ -22,6 +25,8 @@ private:
     static BLEClientBas  slaveBatteryService;
     static BLEClientDis  slaveDeviceInfoService;
     static BLEClientUart slaveUartService;
+
+    static SlaveInputReceivedCallback slaveInputReceivedCallback;
 };
 
 #endif

@@ -58,6 +58,10 @@ protected:
     BLEPeripheralConnection bleHidConnection;
     BLECentralConnection bleSlaveConnection;
 
+    static void onSlaveInputReceived(Chord chord);
+
+    static Chord slaveChord;
+
     constexpr static SwitchPinArray switchPins = { KEY_M_P, KEY_M_R, KEY_M_M, KEY_M_I, KEY_M_T };
 };
 
