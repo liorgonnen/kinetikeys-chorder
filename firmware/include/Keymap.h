@@ -42,6 +42,42 @@ char LEFT_HAND[] = {
     27, /* Esc */
 };
 
+char RIGHT_HAND[] = {
+    0,
+    13,  /* Enter */
+    'e',
+    's',
+    'n',
+    'c',
+    'b',
+    'm',
+    'r',
+    'w',
+    'u',
+    0,
+    'l',
+    0,
+    0,
+    0,
+    'h',
+    'f',
+    'v',
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,  
+};
+
 #define LEFT_HAND_SIZE (sizeof(LEFT_HAND) / sizeof(char))
+#define RIGHT_HAND_SIZE (sizeof(RIGHT_HAND) / sizeof(char))
 
 #endif

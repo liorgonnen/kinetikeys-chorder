@@ -25,35 +25,17 @@ void ChordedKeyboardSlave::setupBleConnection()
 
 void ChordedKeyboardSlave::loop()
 {
-    // uint32_t timeNow = millis();
-    // if (timeNow - lastPrintTime > 1500) {
-    //     lastPrintTime = timeNow;
-    //     Serial.println("Slave is ALIVE");
-    // }
+    if (!Bluefruit.connected()) {
+        return;
+    }
 
-    // while (masterUartService.available()) {
-    //     uint8_t ch = (uint8_t) masterUartService.read();
-    //     Serial.printf("Received: %c", ch);
-    // }
+    Chord currentChord = getCurrentChord();
 
-    bool keyPressed = false;
-    Chord currentChord = 0;
-    for (uint8_t i = 0; i < NUM_KEYS; i++) {
-        if (digitalRead(switchPins[i]) == LOW) {
-            currentChord = currentChord | (1 << i);
-            keyPressed = true;
-        }
-    } 
-
-    digitalWrite(LED_BUILTIN, keyPressed ? HIGH : LOW);
+    digitalWrite(LED_BUILTIN, (currentChord != 0) ? HIGH : LOW);
 
     if (currentChord != previousChord) {
-        if (Bluefruit.connected()) {
-            Serial.printf("Sending to master: %d\n", currentChord);
-            previousChord = currentChord;
-            masterUartService.write(currentChord);
-        } else {
-            Serial.println("Not connected to master yet");
-        }
+        Serial.printf("Sending to master: %d\n", currentChord);
+        previousChord = currentChord;
+        masterUartService.write(currentChord);
     }          
 }

@@ -12,38 +12,6 @@
 #define KEY_M_P PIN_A3
 #define KEY_M_T PIN_A4
 
-// Dummy key map for now
-/*char KEY_VALUES[] = {
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z',
-};*/
-
-//const int NUM_KEY_VALUES = (sizeof(KEY_VALUES) / sizeof(char));
-
 class ChordedKeyboardMaster : public ChordedKeyboardHalf
 {
 public:
@@ -58,11 +26,18 @@ protected:
     BLEPeripheralConnection bleHidConnection;
     BLECentralConnection bleSlaveConnection;
 
+    Chord pendingChord = 0;
+    Chord slavePendingChord = 0;
+
     static void onSlaveInputReceived(Chord chord);
 
     static Chord slaveChord;
 
     constexpr static SwitchPinArray switchPins = { KEY_M_T, KEY_M_I, KEY_M_M, KEY_M_R, KEY_M_P };
+
+private:
+    void sendKey(const char key);
+    void processKey(Chord currentChord, Chord& pendingChord, char keymap[], size_t keymapSize);
 };
 
 #endif

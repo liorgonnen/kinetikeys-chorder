@@ -25,3 +25,15 @@ void ChordedKeyboardHalf::hardReset()
 {
     resetFunc();
 }
+
+Chord ChordedKeyboardHalf::getCurrentChord() 
+{
+    Chord currentChord = 0;
+    for (uint8_t i = 0; i < NUM_KEYS; i++) {
+        if (digitalRead(switchPins[i]) == LOW) {
+            currentChord = currentChord | (1 << i);
+        }
+    }
+
+    return currentChord;
+}

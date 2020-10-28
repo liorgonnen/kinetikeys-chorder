@@ -24,6 +24,8 @@ protected:
 
     const SwitchPinArray& switchPins;
 
+    Chord getCurrentChord();
+
 private:
     void setupPins() const;
 };
