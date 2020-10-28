@@ -62,7 +62,7 @@ I uploaded the STL files for the left hand. You can already 3D print and use the
 
 11. Attach the Cover (note: I need to redesign the way it connects to the main body. In the meanwhile, use some additional adhesive tape to secure it to place.
 12. Wrap the hand-strap in adhesive tape so that it feels nicer and more secure on your hand
-13. Flash the firmware (It's an Arduino-compatible [PlatformIO](https://platformio.org/) project. NOTE: I'm currently working on an updated firmware where one hand is master and the other is slave.
+13. Flash the firmware (It's an Arduino-compatible [PlatformIO](https://platformio.org/) project.
 
 Alright! You're ready to go! Customize the keymap to your liking (right now it's just a dummy a-z mapping for testing). I'll add mine in the upcoming days.
 

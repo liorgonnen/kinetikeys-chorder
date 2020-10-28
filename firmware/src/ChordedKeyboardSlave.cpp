@@ -21,15 +21,15 @@ void ChordedKeyboardSlave::setupBleConnection()
     Serial.println("ChordedKeyboardSlave::setupBleConnection - End");
 }
 
-uint32_t lastPrintTime = 0;
+// uint32_t lastPrintTime = 0;
 
 void ChordedKeyboardSlave::loop()
 {
-    uint32_t timeNow = millis();
-    if (timeNow - lastPrintTime > 1500) {
-        lastPrintTime = timeNow;
-        Serial.println("Slave is ALIVE");
-    }
+    // uint32_t timeNow = millis();
+    // if (timeNow - lastPrintTime > 1500) {
+    //     lastPrintTime = timeNow;
+    //     Serial.println("Slave is ALIVE");
+    // }
 
     // while (masterUartService.available()) {
     //     uint8_t ch = (uint8_t) masterUartService.read();

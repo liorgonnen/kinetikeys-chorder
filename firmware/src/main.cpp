@@ -13,8 +13,8 @@ void setup()
     while (!Serial);
     Serial.println("Serial connected!");  
 
-    //keyboard = new ChordedKeyboardMaster();
-    keyboard = new ChordedKeyboardSlave();
+    keyboard = new ChordedKeyboardMaster();
+    //keyboard = new ChordedKeyboardSlave();
     
     // Jumper jumper(5, 6);
     // if (jumper.isSet()) {
