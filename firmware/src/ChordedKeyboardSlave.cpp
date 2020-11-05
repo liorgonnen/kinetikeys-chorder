@@ -28,6 +28,10 @@ void ChordedKeyboardSlave::loop()
     if (!Bluefruit.connected()) {
         return;
     }
+    // while (masterUartService.available()) {
+    //     uint8_t ch = (uint8_t) masterUartService.read();
+    //     Serial.printf("Received: %c", ch);
+    // }
 
     Chord currentChord = getCurrentChord();
 

@@ -12,6 +12,7 @@ ChordedKeyboardMaster::ChordedKeyboardMaster() : ChordedKeyboardHalf(switchPins)
 }
 
 void ChordedKeyboardMaster::onSlaveInputReceived(Chord chord) {
+    Serial.println("ChordedKeyboardMaster::onSlaveInputReceived");
     slaveChord = chord;
 }
 
@@ -59,9 +60,8 @@ void ChordedKeyboardMaster::sendKey(const char key) {
     if (key != 0) {
         Serial.printf("Sending: %c\n", key);
         bleHidService.keyPress(key);
-        delay(5);
+        delay(10);
         bleHidService.keyRelease();
-        delay(5);
     }
 }
 

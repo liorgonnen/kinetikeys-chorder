@@ -80,12 +80,6 @@ void BLECentralConnection::onSlaveInputReceived(BLEClientUart& slaveUart)
     if (slaveInputReceivedCallback) {
         slaveInputReceivedCallback(slaveChord);
     }
-
-    if (slaveChord != 0) {
-        digitalWrite(LED_BUILTIN, HIGH);
-        delay(100);
-        digitalWrite(LED_BUILTIN, LOW);
-    }
 }
 
 bool BLECentralConnection::isSlaveConnected() {
